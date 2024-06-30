@@ -1,0 +1,12 @@
+﻿@model UserBaseViewModel
+
+@if (User.Identity.IsAuthenticated)
+{
+    <form asp-controller="Authentication" asp-action="Logout" method="post">
+        <button type="submit" class="btn btn-link">Logout</button>
+    </form>
+}
+else
+{
+    // Include your login form or login link here
+}
