@@ -9,7 +9,7 @@ namespace UserManagement.ViewComponents
         {
         }
 
-        public IViewComponentResult Index()
+        public IViewComponentResult Invoke()
         {
             var model = new UserBaseViewModel();
             return View("DeleteUser");
