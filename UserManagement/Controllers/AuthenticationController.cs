@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using UserManagement.Data;
 using UserManagement.Models;
+using UserManagement.Models.Components;
 
 namespace UserManagement.Controllers
 {
@@ -19,7 +20,7 @@ namespace UserManagement.Controllers
 
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public async Task<IActionResult> Register(UserBaseViewModel model)
+        public async Task<IActionResult> Register(UserViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -44,7 +45,7 @@ namespace UserManagement.Controllers
 
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public async Task<IActionResult> Login(UserBaseViewModel model)
+        public async Task<IActionResult> Login(UserViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -68,8 +69,17 @@ namespace UserManagement.Controllers
 
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public async Task<IActionResult> Logout(UserBaseViewModel model)
+        public async Task<IActionResult> Logout(UserViewModel model)
         {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
+
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public async Task<IActionResult> Delete(UserBaseViewModel model)
+        {
+            await _userManager.DeleteAsync(await _userManager.FindByEmailAsync(model.Email));
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }

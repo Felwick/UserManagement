@@ -1,12 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using UserManagement.Models;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace UserManagement.ViewComponents
 {
     public class UserLogoutViewComponent : ViewComponent
     {
-
         public UserLogoutViewComponent()
         {
         }

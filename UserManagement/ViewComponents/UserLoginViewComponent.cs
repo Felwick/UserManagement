@@ -6,14 +6,13 @@ namespace UserManagement.ViewComponents
 {
     public class UserLoginViewComponent : ViewComponent
     {
-
-        public UserLoginViewComponent(SignInManager<UserModel> userManager)
+        public UserLoginViewComponent()
         {
         }
 
         public IViewComponentResult Invoke()
         {
-            var model = new UserBaseViewModel();
+            var model = new UserViewModel();
             return View("UserLogin", model);
         }
     }

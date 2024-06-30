@@ -1,19 +1,16 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using UserManagement.Models;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace UserManagement.ViewComponents
 {
     public class UserRegistrationViewComponent: ViewComponent
     {
-
         public UserRegistrationViewComponent()
         {
         }
 
         public IViewComponentResult Invoke()
         {
-            var model = new UserBaseViewModel();
+            var model = new UserViewModel();
             return View("UserRegistration", model);
         }
     }
