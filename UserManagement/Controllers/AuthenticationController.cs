@@ -34,6 +34,7 @@ namespace UserManagement.Controllers
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError("", error.Description);
+                    return View("Error");
                 }
             }
 

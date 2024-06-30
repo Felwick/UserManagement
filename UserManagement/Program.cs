@@ -3,6 +3,7 @@ using UserManagement.Data;
 using Microsoft.AspNetCore.Identity;
 using UserManagement.Models;
 using UserManagement;
+using UserManagement.Exceptions;
 
 internal class Program
 {
@@ -18,6 +19,7 @@ internal class Program
         builder.Services.AddAuthentication();
         builder.Services.ConfigureCookiePolicy();
         builder.Services.ConfigureAntiforgery();
+        builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
         var app = builder.Build();
 
