@@ -13,7 +13,7 @@ internal class Program
         // Add services to the container.
         builder.Services.AddControllersWithViews();
         builder.Services.AddDbContext<UserManagementContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("UserManagementApp")));
-
+        builder.Services.ConfigureDI();
         builder.Services.ConfigureIdentity();
         builder.Services.AddAuthentication();
         builder.Services.ConfigureCookiePolicy();

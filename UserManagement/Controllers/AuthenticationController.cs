@@ -1,20 +1,19 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using UserManagement.Data;
 using UserManagement.Models;
 using UserManagement.Models.Components;
+using UserManagement.Services;
 
 namespace UserManagement.Controllers
 {
     public class AuthenticationController : Controller
     {
-        private readonly UserManager<UserModel> _userManager;
-        private readonly SignInManager<UserModel> _signInManager;
 
-        public AuthenticationController(UserManager<UserModel> userManager, SignInManager<UserModel> signInManager)
+        private readonly IUserManagementService _userManagementService;
+
+        public AuthenticationController(IUserManagementService userManagementService)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
+            _userManagementService = userManagementService;
 
         }
 
@@ -24,8 +23,7 @@ namespace UserManagement.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new UserModel { UserName = model.UserName, Email = model.Email, UserGuid = Guid.NewGuid(), Id = Guid.NewGuid().ToString() };
-                var result = await _userManager.CreateAsync(user, model.Password);
+                var result = await _userManagementService.RegisterUser(model);
 
                 if (result.Succeeded)
                 {
@@ -40,7 +38,7 @@ namespace UserManagement.Controllers
             }
 
             // If we got this far, something failed go back home
-            return RedirectToAction("Index", "Home");
+            return BadRequest();
         }
 
         [ValidateAntiForgeryToken]
@@ -49,9 +47,8 @@ namespace UserManagement.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByEmailAsync(model.Email);
+                Microsoft.AspNetCore.Identity.SignInResult result = await _userManagementService.Login(model);
 
-                var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, isPersistent: true, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     return RedirectToAction("Index", "Home");
@@ -64,14 +61,14 @@ namespace UserManagement.Controllers
             }
 
             // If we got this far, something failed, go back home
-            return RedirectToAction("Index", "Home");
+            return BadRequest();
         }
 
         [ValidateAntiForgeryToken]
         [HttpPost]
         public async Task<IActionResult> Logout(UserViewModel model)
         {
-            await _signInManager.SignOutAsync();
+            await _userManagementService.Logout(model);
             return RedirectToAction("Index", "Home");
         }
 
@@ -79,8 +76,7 @@ namespace UserManagement.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(UserBaseViewModel model)
         {
-            await _userManager.DeleteAsync(await _userManager.FindByEmailAsync(model.Email));
-            await _signInManager.SignOutAsync();
+            await _userManagementService.Delete(model);
             return RedirectToAction("Index", "Home");
         }
     }

@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using UserManagement.Data;
 using UserManagement.Models;
+using UserManagement.Services;
 
 namespace UserManagement
 {
-    public static class ServicesConfigurationExtension
+    public static class ServicesConfigurationExtensions
     {
         public static IServiceCollection ConfigureIdentity(this IServiceCollection services)
         {
@@ -51,6 +52,13 @@ namespace UserManagement
                 options.FormFieldName = "X-CSRF-TOKEN";
                 options.HeaderName = "X-CSRF-TOKEN";
             });
+
+            return services;
+        }
+        
+        public  static IServiceCollection ConfigureDI(this IServiceCollection services)
+        {
+            services.AddScoped<IUserManagementService, UserManagementService>();
 
             return services;
         }
